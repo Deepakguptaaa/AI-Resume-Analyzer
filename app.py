@@ -3,7 +3,11 @@ from dotenv import load_dotenv
 import os
 
 from utils.pdf_reader import extract_resume_text
-from utils.gemini import analyze_resume, analyze_job_match
+from utils.gemini import (
+    analyze_resume,
+    analyze_job_match,
+    optimize_resume
+)
 from utils.pdf_report import create_pdf
 from components.dashboard import display_dashboard
 
@@ -53,6 +57,7 @@ Upload your resume and receive:
 - 📚 Recommended Certifications
 - 🚀 Suggested Projects
 - 📋 Job Match Analysis
+- ✨ AI Resume Optimization
 """)
 
 st.divider()
@@ -98,12 +103,7 @@ if uploaded_file:
 
                 result = analyze_resume(resume_text)
 
-                # Dashboard
                 display_dashboard(result)
-
-                # -----------------------------
-                # Download PDF Report
-                # -----------------------------
 
                 pdf_file = create_pdf(result)
 
@@ -149,10 +149,6 @@ if uploaded_file:
 
                     display_dashboard(result)
 
-                    # -----------------------------
-                    # Download PDF Report
-                    # -----------------------------
-
                     pdf_file = create_pdf(result)
 
                     with open(pdf_file, "rb") as file:
@@ -167,3 +163,42 @@ if uploaded_file:
                 except Exception as e:
 
                     st.error(e)
+
+    st.divider()
+
+    # -----------------------------
+    # AI Resume Optimizer
+    # -----------------------------
+
+    st.subheader("✨ AI Resume Optimizer")
+
+    st.write(
+        "Improve your resume with ATS-friendly wording, stronger action verbs, and professional formatting."
+    )
+
+    if st.button("✨ Optimize My Resume"):
+
+        with st.spinner("Optimizing Resume..."):
+
+            try:
+
+                optimized_resume = optimize_resume(resume_text)
+
+                st.success("✅ Resume Optimized Successfully!")
+
+                st.text_area(
+                    "Optimized Resume",
+                    optimized_resume,
+                    height=500
+                )
+
+                st.download_button(
+                    label="📥 Download Optimized Resume (.txt)",
+                    data=optimized_resume,
+                    file_name="Optimized_Resume.txt",
+                    mime="text/plain"
+                )
+
+            except Exception as e:
+
+                st.error(e)

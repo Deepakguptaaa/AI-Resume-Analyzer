@@ -116,3 +116,36 @@ Job Description:
     )
 
     return response.text
+
+# -----------------------------
+# Resume Optimizer
+# -----------------------------
+
+def optimize_resume(resume_text):
+
+    prompt = f"""
+You are an expert Resume Writer and ATS Specialist.
+
+Rewrite the following resume professionally.
+
+Rules:
+- Keep all information truthful.
+- Improve grammar and wording.
+- Use strong action verbs.
+- Make bullet points ATS-friendly.
+- Highlight measurable achievements where possible.
+- Maintain a professional tone.
+
+Return ONLY the optimized resume.
+
+Resume:
+
+{resume_text}
+"""
+
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt
+    )
+
+    return response.text

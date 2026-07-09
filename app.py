@@ -1,204 +1,58 @@
 import streamlit as st
-from dotenv import load_dotenv
-import os
 
-from utils.pdf_reader import extract_resume_text
-from utils.gemini import (
-    analyze_resume,
-    analyze_job_match,
-    optimize_resume
-)
-from utils.pdf_report import create_pdf
-from components.dashboard import display_dashboard
+from views.dashboard_page import dashboard_page
+from views.resume_page import resume_page
+from views.job_match_page import job_match_page
+from views.optimizer_page import optimizer_page
+from views.cover_letter_page import cover_letter_page
+from views.interview_page import interview_page
 
 # -----------------------------
-# Load CSS
-# -----------------------------
-
-def load_css():
-    with open("assets/style.css") as f:
-        st.markdown(
-            f"<style>{f.read()}</style>",
-            unsafe_allow_html=True
-        )
-
-load_css()
-
-# -----------------------------
-# Load Environment Variables
-# -----------------------------
-
-load_dotenv()
-
-API_KEY = os.getenv("GEMINI_API_KEY")
-
-# -----------------------------
-# Page Settings
+# Page Config
 # -----------------------------
 
 st.set_page_config(
-    page_title="AI Resume Analyzer Pro",
-    page_icon="📄",
+    page_title="AI Career Assistant Pro",
+    page_icon="🚀",
     layout="wide"
 )
 
-st.title("📄 AI Resume Analyzer Pro")
-
-st.markdown("""
-### 🚀 AI-powered Resume Review
-
-Upload your resume and receive:
-
-- 🎯 ATS Score
-- 💪 Strengths
-- ⚠️ Weaknesses
-- 🛠️ Technical Skills
-- ❌ Missing Skills
-- 📚 Recommended Certifications
-- 🚀 Suggested Projects
-- 📋 Job Match Analysis
-- ✨ AI Resume Optimization
-""")
-
-st.divider()
-
 # -----------------------------
-# Upload Resume
+# Sidebar
 # -----------------------------
 
-uploaded_file = st.file_uploader(
-    "📄 Upload Resume (PDF)",
-    type=["pdf"]
+st.sidebar.title("🚀 AI Career Assistant")
+
+page = st.sidebar.radio(
+    "Navigation",
+    [
+        "🏠 Dashboard",
+        "📄 Resume Analysis",
+        "🎯 Job Match",
+        "✨ Resume Optimizer",
+        "💌 Cover Letter",
+        "🎤 Interview Prep"
+    ]
 )
 
-resume_text = ""
+# -----------------------------
+# Navigation
+# -----------------------------
 
-if uploaded_file:
+if page == "🏠 Dashboard":
+    dashboard_page()
 
-    resume_text = extract_resume_text(uploaded_file)
+elif page == "📄 Resume Analysis":
+    resume_page()
 
-    st.success("✅ Resume uploaded successfully!")
+elif page == "🎯 Job Match":
+    job_match_page()
 
-    with st.expander("📄 View Extracted Resume"):
+elif page == "✨ Resume Optimizer":
+    optimizer_page()
 
-        st.text_area(
-            "Resume Text",
-            resume_text,
-            height=300
-        )
+elif page == "💌 Cover Letter":
+    cover_letter_page()
 
-    st.divider()
-
-    # -----------------------------
-    # Resume Analysis
-    # -----------------------------
-
-    st.subheader("🤖 Resume Analysis")
-
-    if st.button("Analyze Resume"):
-
-        with st.spinner("Analyzing Resume..."):
-
-            try:
-
-                result = analyze_resume(resume_text)
-
-                display_dashboard(result)
-
-                pdf_file = create_pdf(result)
-
-                with open(pdf_file, "rb") as file:
-
-                    st.download_button(
-                        label="📄 Download PDF Report",
-                        data=file,
-                        file_name="Resume_Analysis_Report.pdf",
-                        mime="application/pdf"
-                    )
-
-            except Exception as e:
-
-                st.error(e)
-
-    st.divider()
-
-    # -----------------------------
-    # Job Description Match
-    # -----------------------------
-
-    st.subheader("🎯 Job Description Match")
-
-    job_description = st.text_area(
-        "Paste Job Description",
-        height=220,
-        placeholder="Paste the company's job description here..."
-    )
-
-    if job_description:
-
-        if st.button("Analyze Job Match"):
-
-            with st.spinner("Comparing Resume with Job Description..."):
-
-                try:
-
-                    result = analyze_job_match(
-                        resume_text,
-                        job_description
-                    )
-
-                    display_dashboard(result)
-
-                    pdf_file = create_pdf(result)
-
-                    with open(pdf_file, "rb") as file:
-
-                        st.download_button(
-                            label="📄 Download Job Match Report",
-                            data=file,
-                            file_name="Job_Match_Report.pdf",
-                            mime="application/pdf"
-                        )
-
-                except Exception as e:
-
-                    st.error(e)
-
-    st.divider()
-
-    # -----------------------------
-    # AI Resume Optimizer
-    # -----------------------------
-
-    st.subheader("✨ AI Resume Optimizer")
-
-    st.write(
-        "Improve your resume with ATS-friendly wording, stronger action verbs, and professional formatting."
-    )
-
-    if st.button("✨ Optimize My Resume"):
-
-        with st.spinner("Optimizing Resume..."):
-
-            try:
-
-                optimized_resume = optimize_resume(resume_text)
-
-                st.success("✅ Resume Optimized Successfully!")
-
-                st.text_area(
-                    "Optimized Resume",
-                    optimized_resume,
-                    height=500
-                )
-
-                st.download_button(
-                    label="📥 Download Optimized Resume (.txt)",
-                    data=optimized_resume,
-                    file_name="Optimized_Resume.txt",
-                    mime="text/plain"
-                )
-
-            except Exception as e:
-
-                st.error(e)
+elif page == "🎤 Interview Prep":
+    interview_page()

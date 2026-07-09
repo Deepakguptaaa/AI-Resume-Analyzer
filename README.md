@@ -141,6 +141,10 @@ streamlit run app.py
 - Resume Version Comparison
 - Export to DOCX
 - Deploy on Streamlit Cloud
+- AI Cover Letter Generator
+- Interview Preparation
+- Skill Gap Analysis
+- Resume Templates
 
 ---
 

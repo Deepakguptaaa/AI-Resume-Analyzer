@@ -149,3 +149,37 @@ Resume:
     )
 
     return response.text
+
+# -----------------------------
+# Cover Letter Generator
+# -----------------------------
+
+def generate_cover_letter(resume_text, job_description):
+
+    prompt = f"""
+You are an experienced HR Recruiter.
+
+Using the resume and job description below, write a professional cover letter.
+
+Requirements:
+- Professional tone
+- Around 300–400 words
+- Mention the candidate's strengths
+- Match the job requirements
+- End with a polite closing
+
+Resume:
+
+{resume_text}
+
+Job Description:
+
+{job_description}
+"""
+
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt
+    )
+
+    return response.text

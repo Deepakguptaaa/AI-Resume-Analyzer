@@ -1,6 +1,9 @@
 import streamlit as st
 import re
 from components.charts import ats_gauge
+from components.metric_cards import show_metric_cards
+from components.skill_tags import show_skill_tags
+from components.skills_chart import show_skills_chart
 
 
 def get_section(text, section_name):
@@ -42,6 +45,19 @@ def display_dashboard(result):
         '<p class="score-low">🔴 Needs Improvement</p>',
         unsafe_allow_html=True
     )    
+    strengths = len(get_section(result, "Strengths").split("\n"))
+
+    weaknesses = len(get_section(result, "Weaknesses").split("\n"))
+
+    skills = len(get_section(result, "Technical Skills Found").split("\n"))
+
+    show_metric_cards(
+    score,
+    strengths,
+    weaknesses,
+    skills
+) 
+       
 
     st.divider()
 
@@ -60,8 +76,18 @@ def display_dashboard(result):
     col3, col4 = st.columns(2)
 
     with col3:
-        st.subheader("🛠 Technical Skills")
-        st.info(get_section(result, "Technical Skills Found"))
+     st.subheader("🛠 Technical Skills")
+
+    skills_text = get_section(
+        result,
+        "Technical Skills Found"
+    )
+
+    show_skill_tags(skills_text)
+
+    st.markdown("### 📊 Skill Distribution")
+
+    show_skills_chart(skills_text)
 
     with col4:
         st.subheader("🎯 Missing Skills")

@@ -183,3 +183,62 @@ Job Description:
     )
 
     return response.text
+
+# -----------------------------
+# Interview Preparation
+# -----------------------------
+
+def generate_interview_questions(resume_text):
+
+    prompt = f"""
+You are a Senior Technical Interviewer.
+
+Based on the resume below, generate a professional interview preparation report.
+
+Return in this format only.
+
+# Interview Readiness Score
+85
+
+# HR Questions
+1.
+2.
+3.
+4.
+5.
+
+# Technical Questions
+1.
+2.
+3.
+4.
+5.
+
+# Project-Based Questions
+1.
+2.
+3.
+
+# AI/ML Questions
+1.
+2.
+3.
+4.
+5.
+
+# Tips To Crack Interview
+- Tip
+- Tip
+- Tip
+
+Resume:
+
+{resume_text}
+"""
+
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt
+    )
+
+    return response.text

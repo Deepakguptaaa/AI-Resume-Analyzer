@@ -1,5 +1,5 @@
 import streamlit as st
-
+st.write("Optimizer page loaded")
 from utils.pdf_reader import extract_resume_text
 from utils.gemini import optimize_resume
 

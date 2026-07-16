@@ -21,7 +21,10 @@ st.set_page_config(
 # Sidebar
 # -----------------------------
 
-st.sidebar.title("🚀 AI Career Assistant")
+st.sidebar.markdown("""
+<div class="sidebar-title">🚀 AI Career Assistant</div>
+<div class="sidebar-subtitle">AI-powered Career Toolkit</div>
+""", unsafe_allow_html=True)
 
 page = st.sidebar.radio(
     "Navigation",

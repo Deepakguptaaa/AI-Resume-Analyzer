@@ -1,5 +1,5 @@
 import streamlit as st
-
+st.write("Cover Letter page loaded")
 from utils.pdf_reader import extract_resume_text
 from utils.gemini import generate_cover_letter
 
